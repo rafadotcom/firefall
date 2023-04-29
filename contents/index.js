@@ -35,7 +35,11 @@ function draw() {
     for (let i = 0; i < 10; i++) { // loop through rows
         for (let j = 0; j < 10; j++) { // loop through columns
             if (board[i][j] === 0) {
-                fill(100,0,20)
+                fill(100,10,20)
+                noStroke()
+                rect(j*squareSize, i*squareSize, squareSize, squareSize); // draw a square at (j*squareSize, i*squareSize) with dimensions (squareSize, squareSize)
+            } else if (board[i][j] === 2) {
+                fill(200,60,10);
                 noStroke()
                 rect(j*squareSize, i*squareSize, squareSize, squareSize); // draw a square at (j*squareSize, i*squareSize) with dimensions (squareSize, squareSize)
             }
@@ -44,8 +48,8 @@ function draw() {
 
     // Draw character
     fill(255, 33, 0); // set fill color to red
-    rect(xPos*squareSize, yPos*squareSize, squareSize, squareSize); // draw a square at (xPos*squareSize, yPos*squareSize) with dimensions (squareSize, squareSize)
-
+    rect(xPos*squareSize, yPos*squareSize, squareSize, squareSize); // draw a square at (xPos*squareSize, yPos*squareSize) with dimensions (squareSize, squareSize) 
+    
 }
 
 // Handle arrow key input
@@ -63,9 +67,11 @@ function keyPressed() {
     }
     // Check if new position is within bounds and unblocked
     if (newXPos >= 0 && newXPos < board[0].length && newYPos >= 0 && newYPos < board.length && board[newYPos][newXPos] === 0) {
+        board[yPos][xPos]=2; //alterar o valor da posicao antinga no board para 2
         xPos = newXPos; // update xPos
         yPos = newYPos; // update yPos
     }
+
 }
 
 // Listen for keyboard events on window
