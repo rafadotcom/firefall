@@ -1,26 +1,37 @@
 /// <reference path="p5/p5.global-mode.d.ts" />
 
+// Listen for keyboard events on window
+window.addEventListener("keydown", function(event) {
+    if (event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW || event.keyCode === UP_ARROW || event.keyCode === DOWN_ARROW) {
+        event.preventDefault(); // prevent default behavior of arrow keys (scrolling page)
+    }
+});
+
 // variaveis
 let xPos = 0; // x inicial
 let yPos = 0; // y inicial
-const squareSize = 40; // size of each square on the board
+const squareSize = 40; // tamanho dos quadrados do tabuleiro
+//let startTime; //usada para contar os milisegundos desde que uma seta foi carregada
 
- // arrays 2D (0=caminhavel, 1=bloqueado)
+let isArrowKeyPressed = false; // variable to track whether an arrow key is currently being pressed
+let arrowKeyTimer; // variable to store the interval timer when an arrow key is pressed
+
+
+ // array 2D (0=caminhavel, 1=bloqueado)
 const level1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 1, 0, 1, 1, 1, 1, 1, 1],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 1, 1, 1, 1, 1, 0, 1, 1],
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-    [1, 0, 1, 1, 1, 0, 1, 1, 1, 0],
-    [1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-    [1, 1, 1, 0, 1, 1, 1, 0, 1, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 1, 1, 1, 1, 1, 1, 0, 1, 0],
+    [0, 1, 0, 0, 0, 0, 1, 0, 1, 0],
+    [0, 1, 0, 1, 1, 0, 1, 0, 1, 0],
+    [0, 1, 0, 1, 1, 1, 1, 0, 1, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
 let board = level1;
-    
 
 function setup() {
     createCanvas(400,400).parent('canvas');
@@ -71,12 +82,17 @@ function keyPressed() {
         xPos = newXPos; // update xPos
         yPos = newYPos; // update yPos
     }
-
+    if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+        if (!isArrowKeyPressed) { // check if an arrow key is not currently being pressed
+          isArrowKeyPressed = true;
+          arrowKeyTimer = setInterval(keyPressed, 150); // call keyPressed() every 100 milliseconds while the key is still pressed
+        }
+      }
 }
 
-// Listen for keyboard events on window
-window.addEventListener("keydown", function(event) {
-    if (event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW || event.keyCode === UP_ARROW || event.keyCode === DOWN_ARROW) {
-        event.preventDefault(); // prevent default behavior of arrow keys (scrolling page)
+function keyReleased() {
+    if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+      clearInterval(arrowKeyTimer); // clear the interval timer when the arrow key is released
+      isArrowKeyPressed = false; // set the isArrowKeyPressed variable to false
     }
-  });
+  }
