@@ -10,7 +10,6 @@ window.addEventListener("keydown", function(event) {
 // variaveis
 let xPos = 0; // x inicial
 let yPos = 0; // y inicial
-const squareSize = 40; // tamanho dos quadrados do tabuleiro
 //let startTime; //usada para contar os milisegundos desde que uma seta foi carregada
 
 let isArrowKeyPressed = false; // variable to track whether an arrow key is currently being pressed
@@ -30,8 +29,34 @@ const level1 = [
     [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
+const xPos1 = 4;
+const yPos1 = 0;
 
-let board = level1;
+const level2 = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0], //
+    [0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0], //
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1], //
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] 
+];
+const xPos2 = 1;
+const yPos2 = 9;
+
+let board = level2;
+var squareSize = 400/board.length; // tamanho dos quadrados do tabuleiro
+xPos = xPos2; // x inicial
+yPos = yPos2; // y inicial
+
+
 
 function setup() {
     createCanvas(400,400).parent('canvas');
@@ -43,8 +68,8 @@ function draw() {
     // Draw board
     stroke(0); // set stroke color to black
     strokeWeight(2); // set stroke weight to 2 pixels
-    for (let i = 0; i < 10; i++) { // loop through rows
-        for (let j = 0; j < 10; j++) { // loop through columns
+    for (let i = 0; i < board.length; i++) { // loop through rows
+        for (let j = 0; j < board.length; j++) { // loop through columns
             if (board[i][j] === 0) {
                 fill(100,10,20)
                 noStroke()
