@@ -4,62 +4,95 @@
 window.addEventListener("keydown", function(event) {
     if (event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW || event.keyCode === UP_ARROW || event.keyCode === DOWN_ARROW) {
         event.preventDefault(); // prevent default behavior of arrow keys (scrolling page)
+        //isArrowKeyPressed = true;
     }
 });
+
+/*/ Listen for keyboard events on window
+window.addEventListener("keyup", function(event) {
+    if (event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW || event.keyCode === UP_ARROW || event.keyCode === DOWN_ARROW) {
+      isArrowKeyPressed = false; // set flag variable to false when an arrow key is released
+    }
+});
+
+window.onload = function() {
+    document.getElementById("canvas").focus();
+};*/
 
 // variaveis
 let xPos = 0; // x inicial
 let yPos = 0; // y inicial
-//let startTime; //usada para contar os milisegundos desde que uma seta foi carregada
+const canvasSize = 500;
 
 let isArrowKeyPressed = false; // variable to track whether an arrow key is currently being pressed
 let arrowKeyTimer; // variable to store the interval timer when an arrow key is pressed
 
 
- // array 2D (0=caminhavel, 1=bloqueado)
+ // array 2D (0=bloqueado, 1=caminhavel, 2=caminhavel 2 vezes)
 const level1 = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 1, 1, 1, 1, 1, 1, 0, 1, 0],
-    [0, 1, 0, 0, 0, 0, 1, 0, 1, 0],
-    [0, 1, 0, 1, 1, 0, 1, 0, 1, 0],
-    [0, 1, 0, 1, 1, 1, 1, 0, 1, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 0, 1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 const xPos1 = 4;
 const yPos1 = 0;
 
 const level2 = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0], //
-    [0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0], //
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1], //
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] 
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+    [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0],
+    [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0],
+    [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 const xPos2 = 1;
 const yPos2 = 9;
 
-let board = level2;
-var squareSize = 400/board.length; // tamanho dos quadrados do tabuleiro
-xPos = xPos2; // x inicial
-yPos = yPos2; // y inicial
+const level3 = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
+const xPos3 = 12;
+const yPos3 = 7;
+
+let board = level3;
+xPos = xPos3; // x inicial
+yPos = yPos3; // y inicial
+var squareSize = canvasSize/board.length; // tamanho dos quadrados do tabuleiro
 
 
 
 function setup() {
-    createCanvas(400,400).parent('canvas');
+    createCanvas(canvasSize,canvasSize).parent('canvas');
 }
 
 function draw() {
@@ -70,13 +103,15 @@ function draw() {
     strokeWeight(2); // set stroke weight to 2 pixels
     for (let i = 0; i < board.length; i++) { // loop through rows
         for (let j = 0; j < board.length; j++) { // loop through columns
-            if (board[i][j] === 0) {
+                noStroke()
+            if (board[i][j] === 1) { //casa percorrivel 2 vezes
                 fill(100,10,20)
-                noStroke()
                 rect(j*squareSize, i*squareSize, squareSize, squareSize); // draw a square at (j*squareSize, i*squareSize) with dimensions (squareSize, squareSize)
-            } else if (board[i][j] === 2) {
+            } else if (board[i][j] === -1) { //se a casa ja tiver sido percorrida
                 fill(200,60,10);
-                noStroke()
+                rect(j*squareSize, i*squareSize, squareSize, squareSize); // draw a square at (j*squareSize, i*squareSize) with dimensions (squareSize, squareSize)
+            } else if (board[i][j] === 2){
+                fill(40,10,10);
                 rect(j*squareSize, i*squareSize, squareSize, squareSize); // draw a square at (j*squareSize, i*squareSize) with dimensions (squareSize, squareSize)
             }
         }
@@ -102,17 +137,23 @@ function keyPressed() {
         newXPos++; // move right one column
     }
     // Check if new position is within bounds and unblocked
-    if (newXPos >= 0 && newXPos < board[0].length && newYPos >= 0 && newYPos < board.length && board[newYPos][newXPos] === 0) {
-        board[yPos][xPos]=2; //alterar o valor da posicao antinga no board para 2
+    if (newXPos >= 0 && newXPos < board[0].length && newYPos >= 0 && newYPos < board.length && board[newYPos][newXPos] > 0) {
+        console.log(board[yPos][xPos]);
+        if (board[yPos][xPos] === 2){//se passar de uma casa caminhavel 2 vezes
+            board[yPos][xPos]=1; //alterar o valor da posicao antiga no board para 1
+        } else if (board[yPos][xPos] === 1){//se passar de uma casa caminhavel 1 vez
+            board[yPos][xPos]=-1; //alterar o valor da posicao antiga no board para -1
+        }
         xPos = newXPos; // update xPos
         yPos = newYPos; // update yPos
     }
+    console.log(isArrowKeyPressed);
     if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
         if (!isArrowKeyPressed) { // check if an arrow key is not currently being pressed
           isArrowKeyPressed = true;
-          arrowKeyTimer = setInterval(keyPressed, 150); // call keyPressed() every 100 milliseconds while the key is still pressed
+          arrowKeyTimer = setInterval(keyPressed, 200); // call keyPressed() every 200 milliseconds while the key is still pressed
         }
-      }
+    }
 }
 
 function keyReleased() {
@@ -120,4 +161,6 @@ function keyReleased() {
       clearInterval(arrowKeyTimer); // clear the interval timer when the arrow key is released
       isArrowKeyPressed = false; // set the isArrowKeyPressed variable to false
     }
-  }
+}
+
+  
