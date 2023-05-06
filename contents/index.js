@@ -8,87 +8,114 @@ window.addEventListener("keydown", function(event) {
     }
 });
 
-/*/ Listen for keyboard events on window
-window.addEventListener("keyup", function(event) {
-    if (event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW || event.keyCode === UP_ARROW || event.keyCode === DOWN_ARROW) {
-      isArrowKeyPressed = false; // set flag variable to false when an arrow key is released
-    }
-});
-
-window.onload = function() {
-    document.getElementById("canvas").focus();
-};*/
-
 // variaveis
-let xPos = 0; // x inicial
-let yPos = 0; // y inicial
+let xPos; // x inicial
+let yPos; // y inicial
 const canvasSize = 500;
+var squareSize;
 
 let isArrowKeyPressed = false; // variable to track whether an arrow key is currently being pressed
 let arrowKeyTimer; // variable to store the interval timer when an arrow key is pressed
 
 
- // array 2D (0=bloqueado, 1=caminhavel, 2=caminhavel 2 vezes)
-const level1 = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-];
-const xPos1 = 4;
-const yPos1 = 0;
+// array 2D (0=bloqueado, 1=caminhavel, 2=caminhavel 2 vezes)
+const level1 = { 
+    board: [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+        [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+        [1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ],
+    start: {
+        x:0,
+        y:0
+    },
+    finish: {
+        x:5,
+        y:5
+    },
+};
 
-const level2 = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
-    [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0],
-    [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0],
-    [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
-const xPos2 = 1;
-const yPos2 = 9;
+const level2 = { 
+    board: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+        [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    start: {
+        x:1,
+        y:9
+    },
+    finish: {
+        x:4,
+        y:5
+    },
+};
 
-const level3 = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-    [1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
-const xPos3 = 12;
-const yPos3 = 7;
+const level3 = { 
+    board: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    start: {
+        x:12,
+        y:7
+    },
+    finish: {
+        x:4,
+        y:5
+    },
+};
 
-let board = level3;
-xPos = xPos3; // x inicial
-yPos = yPos3; // y inicial
-var squareSize = canvasSize/board.length; // tamanho dos quadrados do tabuleiro
+let board; //definir o board 1 como default
+/**
+ * Funcao para mudar o board
+ * @argument nivel(int) - um numero de 1 ao total de niveis
+ */
+function playLevel(nivel){
+    //selecionar nivel a partir ne um numero
+    const levels = [level1,level2,level3];
+    const level = levels[nivel-1];
+    //mudar quadro e posicao inicial/final
+    board = level.board;
+    xPos = level.start.x; // x inicial
+    yPos = level.start.y; // y inicial
+    squareSize = canvasSize/board.length; // tamanho dos quadrados do tabuleiro
+}
 
+//o tabuleiro e iniciado com o nivel 1
+playLevel(1);
 
 
 function setup() {

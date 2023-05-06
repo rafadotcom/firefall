@@ -1,10 +1,18 @@
+*:focus{
+    outline: none;
+}
+
 body {
     margin: 0;
     background-color: brown;
     font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-size: larger;
 }
 
 #canvas {
+    margin-top: 50px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
@@ -14,7 +22,6 @@ canvas {
 
 #title {
     text-align: center;
-    color: white;
     margin-top: 25px;
 }
 
@@ -27,4 +34,14 @@ canvas {
     height: 28px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+#niveis {
+    margin-top: 20px;
+    text-align: center;
+}
+#niveis button {
+    height: 28px;
+    width: 40px;
+    font-size: large;
 }
