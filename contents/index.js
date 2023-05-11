@@ -4,7 +4,6 @@
 window.addEventListener("keydown", function(event) {
     if (event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW || event.keyCode === UP_ARROW || event.keyCode === DOWN_ARROW) {
         event.preventDefault(); // prevent default behavior of arrow keys (scrolling page)
-        //isArrowKeyPressed = true;
     }
 });
 
@@ -16,7 +15,8 @@ var squareSize;
 
 let isArrowKeyPressed = false; // variable to track whether an arrow key is currently being pressed
 let arrowKeyTimer; // variable to store the interval timer when an arrow key is pressed
-
+let isButtonPressed = false;
+let buttonTimer;
 
 // array 2D (0=bloqueado, 1=caminhavel, 2=caminhavel 2 vezes)
 const level1 = { 
@@ -152,6 +152,55 @@ function draw() {
 
 // Handle arrow key input
 function keyPressed() {
+    move(keyCode);
+    if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+        if (!isArrowKeyPressed) { // check if an arrow key is not currently being pressed
+          isArrowKeyPressed = true;
+          arrowKeyTimer = setInterval(keyPressed, 200); // call keyPressed() every 200 milliseconds while the key is still pressed
+        }
+    }
+}
+
+function keyReleased() {
+    if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+        clearInterval(arrowKeyTimer); // clear the interval timer when the arrow key is released
+        isArrowKeyPressed = false; // set the isArrowKeyPressed variable to false
+    }
+}
+
+let buttonDirection;
+function buttonPressed(keyCode){
+    move(keyCode)
+    if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+        buttonDirection = keyCode;
+        if (!isButtonPressed) {
+            isButtonPressed = true;
+            buttonTimer = setInterval(moveWithButton, 200); // call keyPressed() every 200 milliseconds while the key is still pressed
+        }
+    }
+    console.log("buttonpressed");
+}
+
+function buttonReleased(){
+    clearInterval(buttonTimer); // clear the interval timer when the arrow key is released
+    isButtonPressed = false; // set the isArrowKeyPressed variable to false
+    buttonDirection = null;
+    console.log("buttonreleased");
+}
+
+function moveWithButton(){
+    move(buttonDirection);
+}
+
+//funcao que guarda a direcao guardada
+
+
+/**
+ * Função que move o jogador no tabuleiro
+ * @param {*} keyCode Direção do movimento.
+ */
+function move(keyCode){
+    console.log(isButtonPressed);
     let newXPos = xPos; // initialize newXPos to current xPos
     let newYPos = yPos; // initialize newYPos to current yPos
     if (keyCode === UP_ARROW) { // if up arrow is pressed
@@ -165,7 +214,6 @@ function keyPressed() {
     }
     // Check if new position is within bounds and unblocked
     if (newXPos >= 0 && newXPos < board[0].length && newYPos >= 0 && newYPos < board.length && board[newYPos][newXPos] > 0) {
-        console.log(board[yPos][xPos]);
         if (board[yPos][xPos] === 2){//se passar de uma casa caminhavel 2 vezes
             board[yPos][xPos]=1; //alterar o valor da posicao antiga no board para 1
         } else if (board[yPos][xPos] === 1){//se passar de uma casa caminhavel 1 vez
@@ -174,20 +222,25 @@ function keyPressed() {
         xPos = newXPos; // update xPos
         yPos = newYPos; // update yPos
     }
-    console.log(isArrowKeyPressed);
-    if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
-        if (!isArrowKeyPressed) { // check if an arrow key is not currently being pressed
-          isArrowKeyPressed = true;
-          arrowKeyTimer = setInterval(keyPressed, 200); // call keyPressed() every 200 milliseconds while the key is still pressed
-        }
-    }
 }
 
-function keyReleased() {
-    if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
-      clearInterval(arrowKeyTimer); // clear the interval timer when the arrow key is released
-      isArrowKeyPressed = false; // set the isArrowKeyPressed variable to false
-    }
-}
-
+/*/ Listen for button click events
+document.getElementById("up").addEventListener("click", function() {
+    // Handle up arrow button click
+    // ...
+  });
   
+  document.getElementById("down").addEventListener("click", function() {
+    // Handle down arrow button click
+    // ...
+  });
+  
+  document.getElementById("left").addEventListener("click", function() {
+    // Handle left arrow button click
+    // ...
+  });
+  
+  document.getElementById("right").addEventListener("click", function() {
+    // Handle right arrow button click
+    move(RIGHT_ARROW);
+  });*/
