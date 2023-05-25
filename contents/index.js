@@ -12,6 +12,7 @@ let xPos; // x inicial
 let yPos; // y inicial
 const canvasSize = 500;
 var squareSize;
+let endPos;
 
 let isArrowKeyPressed = false; // variable to track whether an arrow key is currently being pressed
 let arrowKeyTimer; // variable to store the interval timer when an arrow key is pressed
@@ -64,8 +65,8 @@ const level2 = {
         y:9
     },
     finish: {
-        x:4,
-        y:5
+        x:12,
+        y:9
     },
 };
 
@@ -99,24 +100,25 @@ const level3 = {
 };
 
 let board; //definir o board 1 como default
+let nivel = 1;
 /**
  * Funcao para mudar o board
  * @argument nivel(int) - um numero de 1 ao total de niveis
  */
-function playLevel(nivel){
-    //selecionar nivel a partir ne um numero
+function playLevel(n){
+    nivel = n; //guardar o nivel onde o jogador esta
+    //selecionar nivel a partir de um numero
     const levels = [level1,level2,level3];
-    const level = levels[nivel-1];
-    //mudar quadro e posicao inicial/final
-    board = level.board;
+    const level = levels[n-1];
+    board = JSON.parse(JSON.stringify(level.board));  // mudar quadro
     xPos = level.start.x; // x inicial
     yPos = level.start.y; // y inicial
+    endPos = { x:level.finish.x, y:level.finish.y};
     squareSize = canvasSize/board.length; // tamanho dos quadrados do tabuleiro
 }
 
 //o tabuleiro e iniciado com o nivel 1
 playLevel(1);
-
 
 function setup() {
     createCanvas(canvasSize,canvasSize).parent('canvas');
@@ -124,25 +126,25 @@ function setup() {
 
 function draw() {
     background('brown');
-
+    noStroke()
     // Draw board
-    stroke(0); // set stroke color to black
-    strokeWeight(2); // set stroke weight to 2 pixels
     for (let i = 0; i < board.length; i++) { // loop through rows
         for (let j = 0; j < board.length; j++) { // loop through columns
-                noStroke()
             if (board[i][j] === 1) { //casa percorrivel 2 vezes
                 fill(100,10,20)
                 rect(j*squareSize, i*squareSize, squareSize, squareSize); // draw a square at (j*squareSize, i*squareSize) with dimensions (squareSize, squareSize)
             } else if (board[i][j] === -1) { //se a casa ja tiver sido percorrida
                 fill(200,60,10);
                 rect(j*squareSize, i*squareSize, squareSize, squareSize); // draw a square at (j*squareSize, i*squareSize) with dimensions (squareSize, squareSize)
-            } else if (board[i][j] === 2){
-                fill(40,10,10);
+            } else if (board[i][j] === 2){ //se a casa for caminhável 2 vezes
+                fill(60,10,10);
                 rect(j*squareSize, i*squareSize, squareSize, squareSize); // draw a square at (j*squareSize, i*squareSize) with dimensions (squareSize, squareSize)
             }
         }
     }
+    // desenhar o ponto de chegada
+    fill(40,0,0);
+    rect(endPos.x*squareSize, endPos.y*squareSize, squareSize, squareSize);
 
     // Draw character
     fill(255, 33, 0); // set fill color to red
@@ -178,14 +180,12 @@ function buttonPressed(keyCode){
             buttonTimer = setInterval(moveWithButton, 200); // call keyPressed() every 200 milliseconds while the key is still pressed
         }
     }
-    console.log("buttonpressed");
 }
 
 function buttonReleased(){
     clearInterval(buttonTimer); // clear the interval timer when the arrow key is released
     isButtonPressed = false; // set the isArrowKeyPressed variable to false
     buttonDirection = null;
-    console.log("buttonreleased");
 }
 
 function moveWithButton(){
@@ -200,7 +200,6 @@ function moveWithButton(){
  * @param {*} keyCode Direção do movimento.
  */
 function move(keyCode){
-    console.log(isButtonPressed);
     let newXPos = xPos; // initialize newXPos to current xPos
     let newYPos = yPos; // initialize newYPos to current yPos
     if (keyCode === UP_ARROW) { // if up arrow is pressed
@@ -222,25 +221,14 @@ function move(keyCode){
         xPos = newXPos; // update xPos
         yPos = newYPos; // update yPos
     }
+    console.log("Nivel: " + nivel);
+    console.log("Pos final: " + endPos.x + ", " + endPos.y);
+    console.log("Nova pos: " + newXPos + ", " + newYPos);
+    console.log(newXPos + ", " + endPos.x);
+    // se a nova posição for a final
+    if (newXPos == endPos.x && newYPos == endPos.y){
+        console.log("A mudar para o nivel " + (nivel++));
+        playLevel(nivel++);
+    }
 }
 
-/*/ Listen for button click events
-document.getElementById("up").addEventListener("click", function() {
-    // Handle up arrow button click
-    // ...
-  });
-  
-  document.getElementById("down").addEventListener("click", function() {
-    // Handle down arrow button click
-    // ...
-  });
-  
-  document.getElementById("left").addEventListener("click", function() {
-    // Handle left arrow button click
-    // ...
-  });
-  
-  document.getElementById("right").addEventListener("click", function() {
-    // Handle right arrow button click
-    move(RIGHT_ARROW);
-  });*/
