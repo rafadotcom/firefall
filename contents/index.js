@@ -13,6 +13,16 @@ let yPos; // y inicial
 const canvasSize = 500;
 var squareSize;
 let endPos;
+let pontos = [0,0];
+function updatePontos(n,p) {
+    if (p==undefined){
+        pontos[0] = n;
+        document.getElementById('pontos').innerHTML = "Pontos: " + n + "/" + pontos[1];
+    } else {
+        pontos = [n,p];
+        document.getElementById('pontos').innerHTML = "Pontos: " + n + "/" + p;
+    }
+}
 
 let isArrowKeyPressed = false; // variable to track whether an arrow key is currently being pressed
 let arrowKeyTimer; // variable to store the interval timer when an arrow key is pressed
@@ -41,6 +51,7 @@ const level1 = {
         x:5,
         y:5
     },
+    total: 58
 };
 
 const level2 = { 
@@ -67,6 +78,7 @@ const level2 = {
         x:12,
         y:3
     },
+    total: 19
 };
 
 const level3 = {
@@ -95,6 +107,7 @@ const level3 = {
         x:0,
         y:8
     },
+    total: 41
 }
 const level4 = { 
     board: [
@@ -121,6 +134,7 @@ const level4 = {
         x:12,
         y:9
     },
+    total: 43
 };
 
 const level5 = { 
@@ -150,6 +164,7 @@ const level5 = {
         x:4,
         y:5
     },
+    total: 66
 };
 
 const level6 = {
@@ -178,6 +193,7 @@ const level6 = {
         x:13,
         y:6
     },
+    total: 82
 }
 
 const level7 = {
@@ -206,6 +222,7 @@ const level7 = {
         x:7,
         y:7
     },
+    total: 99
 }
 
 const level8 = { 
@@ -235,6 +252,7 @@ const level8 = {
         x:6,
         y:13
     },
+    total: 128
 };
 
 const level9 = {
@@ -265,6 +283,7 @@ const level9 = {
         x:14,
         y:12
     },
+    total: 204
 }
 
 
@@ -279,6 +298,7 @@ function playLevel(n){
     nivel = n; //guardar o nivel onde o jogador esta
     //selecionar nivel a partir de um numero
     const level = levels[n-1];
+    updatePontos(0,level.total);
     board = JSON.parse(JSON.stringify(level.board));  // mudar quadro
     xPos = level.start.x; // x inicial
     yPos = level.start.y; // y inicial
@@ -365,7 +385,8 @@ function moveWithButton(){
 
 
 /**
- * Função que move o jogador no tabuleiro
+ * Função que move o jogador no tabuleiro.
+ * Chamada quando se carrega num dos botões ou teclas de setas
  * @param {*} keyCode Direção do movimento.
  */
 function move(keyCode){
@@ -389,11 +410,12 @@ function move(keyCode){
         }
         xPos = newXPos; // update xPos
         yPos = newYPos; // update yPos
+        updatePontos(pontos[0]+1); //adicionar 1 ponto
     }
     // se a nova posição for a final
     if (newXPos == endPos.x && newYPos == endPos.y){
-        console.log("A mudar para o nivel " + (nivel++));
-        playLevel(nivel++);
+        nivel++
+        playLevel(nivel);
     }
 }
 

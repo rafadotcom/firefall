@@ -6,8 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>FireFall</title>
         <link rel="stylesheet" href="contents/index.css">
-        <script src="contents/p5/p5.min.js"></script>
-        <script src="contents/index.js"></script>
     </head>
     <body>
         <h1 id="title">FireFall</h1>
@@ -17,6 +15,7 @@
             <button>Troféus</button>
         </div>
         <div id="canvas" tabindex="1"></div>
+        <div id="pontos">pontos: y/n</div>
         <div id="niveis">
             <label>Nivel</label>
             <button onclick="playLevel(1)">1</button>
@@ -37,5 +36,7 @@
                 <button id="right" onmousedown="buttonPressed(RIGHT_ARROW)" onmouseup="buttonReleased()">Right</button>
             </div>
         </div>
+        <script src="contents/p5/p5.min.js"></script>
+        <script src="contents/index.js"></script>
     </body>
 </html>

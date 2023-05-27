@@ -12,7 +12,7 @@ body {
 
 #canvas {
     margin-top: 50px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     text-align: center;
 }
 
@@ -34,6 +34,13 @@ canvas {
     height: 28px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+#pontos{
+    height: 20px;
+    width: 480px;
+    text-align: right;
+    margin: auto;
 }
 
 #niveis {
