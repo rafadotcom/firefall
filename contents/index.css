@@ -49,13 +49,18 @@ canvas {
 }
 #buttons button:hover{
     color: rgb(255, 213, 124);
+    cursor: pointer;
 }
 
-#pontos{
+#pontos * {
     height: 20px;
     width: 480px;
     text-align: right;
     margin: auto;
+}
+#pontos #b:hover{
+    color: rgb(255, 213, 124);
+    cursor: pointer;
 }
 
 #niveis {
@@ -73,6 +78,7 @@ canvas {
 }
 #niveis button:hover{
     color: rgb(255, 213, 124);
+    cursor: pointer;
 }
 
 #controlos{
@@ -91,6 +97,9 @@ canvas {
     width: 90px;
     background-size: cover;
     background-color: brown;
+}
+#setas button:hover{
+    cursor: pointer;
 }
 #setas button:active {
     opacity: 0.8;

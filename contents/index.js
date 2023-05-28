@@ -13,16 +13,6 @@ let yPos; // y inicial
 const canvasSize = 500;
 var squareSize;
 let endPos;
-let pontos = [0,0];
-function updatePontos(n,p) {
-    if (p==undefined){
-        pontos[0] = n;
-        document.getElementById('pontos').innerHTML = "Pontos: " + n + "/" + pontos[1];
-    } else {
-        pontos = [n,p];
-        document.getElementById('pontos').innerHTML = "Pontos: " + n + "/" + p;
-    }
-}
 
 let isArrowKeyPressed = false; // variable to track whether an arrow key is currently being pressed
 let arrowKeyTimer; // variable to store the interval timer when an arrow key is pressed
@@ -58,7 +48,7 @@ const level2 = {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
         [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
         [1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
@@ -282,12 +272,34 @@ const levels = [level1,level2,level3,level4,level5,level6,level7,level8,level9];
 
 let board; //definir o board 1 como default
 let nivel = 1; //começar no nivel 1
+let pontos = [0,0];
 let highscores = JSON.parse(localStorage.getItem('highscores')); //lista com os recordes de pontos por nível
 if (highscores==null){
     highscores = []
     highscores.length = 9;
     localStorage.setItem('highscores', JSON.stringify(highscores));
-
+}
+/**
+ * Função que apresenta a pontuação
+ * @param {number} n A pontuação após cada movimento
+ * @param {number} p A pontuação total
+ */
+function updatePontos(n,p) {
+    //botao de recomeçar
+    let button = "<p onclick=\"playLevel(" + nivel + ")\" id=\"b\">Recomeçar<p>";
+    //record
+    let record = highscores[nivel-1];
+    if (record==null){
+        record = 0;
+    }
+    //total do nivel
+    if (p==undefined){
+        pontos[0] = n;
+        document.getElementById('pontos').innerHTML = button + "<p> Nível: " + nivel + " Pts: " + n + " Record: " + record + "  Total: " + pontos[1] + "</p>";
+    } else {
+        pontos = [n,p];
+        document.getElementById('pontos').innerHTML = button + "<p> Nível: " + nivel + " Pts: " + n + " Record: " + record + " Total: " + p + "</p>";
+    }
 }
 /**
  * Funcao para mudar o board
