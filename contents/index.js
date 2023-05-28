@@ -30,7 +30,7 @@ let isButtonPressed = false;
 let buttonTimer;
 
 // array 2D (0=bloqueado, 1=caminhavel, 2=caminhavel 2 vezes)
-const level1 = { 
+const level1 = {
     board: [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -53,8 +53,7 @@ const level1 = {
     },
     total: 58
 };
-
-const level2 = { 
+const level2 = {
     board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -80,7 +79,6 @@ const level2 = {
     },
     total: 19
 };
-
 const level3 = {
     board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -109,7 +107,7 @@ const level3 = {
     },
     total: 41
 }
-const level4 = { 
+const level4 = {
     board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -136,8 +134,7 @@ const level4 = {
     },
     total: 43
 };
-
-const level5 = { 
+const level5 = {
     board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -166,7 +163,6 @@ const level5 = {
     },
     total: 66
 };
-
 const level6 = {
     board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -195,7 +191,6 @@ const level6 = {
     },
     total: 82
 }
-
 const level7 = {
     board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -224,8 +219,7 @@ const level7 = {
     },
     total: 99
 }
-
-const level8 = { 
+const level8 = {
     board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -254,7 +248,6 @@ const level8 = {
     },
     total: 128
 };
-
 const level9 = {
     board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -285,11 +278,17 @@ const level9 = {
     },
     total: 204
 }
-
+const levels = [level1,level2,level3,level4,level5,level6,level7,level8,level9];
 
 let board; //definir o board 1 como default
-let nivel = 1;
-const levels = [level1,level2,level3,level4,level5,level6,level7,level8,level9];
+let nivel = 1; //começar no nivel 1
+let highscores = JSON.parse(localStorage.getItem('highscores')); //lista com os recordes de pontos por nível
+if (highscores==null){
+    highscores = []
+    highscores.length = 9;
+    localStorage.setItem('highscores', JSON.stringify(highscores));
+
+}
 /**
  * Funcao para mudar o board
  * @argument nivel(int) - um numero de 1 ao total de niveis
@@ -315,7 +314,7 @@ function setup() {
 
 function draw() {
     background('brown');
-    noStroke()
+    noStroke();
     // Draw board
     for (let i = 0; i < board.length; i++) { // loop through rows
         for (let j = 0; j < board.length; j++) { // loop through columns
@@ -414,8 +413,26 @@ function move(keyCode){
     }
     // se a nova posição for a final
     if (newXPos == endPos.x && newYPos == endPos.y){
+        highscores = JSON.parse(localStorage.getItem('highscores'));
+        //se nao houver higscore para este nivel
+        //ou o highscore que esta guardado seja menor do que o obtido
+        if (highscores[nivel-1] == null || pontos[0] > highscores[nivel-1]) {
+            //guardar o highscore
+            highscores[nivel-1] = pontos[0];
+            localStorage.setItem('highscores', JSON.stringify(highscores));
+        }
+        //verificar por troféus
+        awardCheck(highscores);
+        //passar para o próximo nivel
         nivel++
         playLevel(nivel);
     }
 }
 
+function awardCheck(highscores){
+    let soma = highscores.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    console.log(highscores);
+    console.log(soma);
+    //min:179
+    //max:720
+}

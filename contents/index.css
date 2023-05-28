@@ -2,11 +2,21 @@
     outline: none;
 }
 
+* {
+    font-family: 'pixeloid', sans-serif;
+    color: white;
+    border: 0;
+
+}
+
+@font-face {
+    font-family: 'pixeloid'; /* Specify a name for your font */
+    src: url('pixeloid-font/PixeloidSans-mLxMm.ttf'); /* Provide the path to your font file */
+}
+
 body {
     margin: 0;
     background-color: brown;
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
     font-size: larger;
 }
 
@@ -28,12 +38,17 @@ canvas {
 #buttons {
     text-align: center;
     margin-top: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 #buttons button {
+    font-size: large;
     height: 28px;
     padding-left: 20px;
     padding-right: 20px;
+    background-color: brown;
+}
+#buttons button:hover{
+    color: rgb(255, 213, 124);
 }
 
 #pontos{
@@ -47,10 +62,17 @@ canvas {
     margin-top: 20px;
     text-align: center;
 }
+#niveis label {
+    margin-right: 25px;
+}
 #niveis button {
     height: 28px;
     width: 40px;
     font-size: large;
+    background-color: brown;
+}
+#niveis button:hover{
+    color: rgb(255, 213, 124);
 }
 
 #controlos{
@@ -60,26 +82,36 @@ canvas {
 #setas {
     display: grid;
     width: 270px;
-    height: 270px;
+    height: 180px;
     margin: auto;
+    margin-bottom: 20px;
 }
 #setas button {
     height:90px;
     width: 90px;
+    background-size: cover;
+    background-color: brown;
+}
+#setas button:active {
+    opacity: 0.8;
 }
 #up {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
+    background-image: url('images/arrows/up.png'); /* Set the path to your image */
 }
 #left {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
+    background-image: url('images/arrows/left.png'); /* Set the path to your image */
 }
 #right {
     grid-column: 3 / 4;
     grid-row: 2 / 3;
+    background-image: url('images/arrows/right.png'); /* Set the path to your image */
 }
 #down {
     grid-column: 2 / 3;
-    grid-row: 3 / 4;
+    grid-row: 2 / 3;
+    background-image: url('images/arrows/down.png'); /* Set the path to your image */
 }
