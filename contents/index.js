@@ -441,10 +441,83 @@ function move(keyCode){
     }
 }
 
+//ir buscar a lista de troféus de sessões passadas
+let awards = JSON.parse(localStorage.getItem('awards')); //lista com os trofeus
+if (awards==null){
+    awards = [false,false,false,false,false];
+    localStorage.setItem('awards', JSON.stringify(awards));
+}
+showAwards();
+/**
+ * Verifica se uma lista so contem numeros
+ * @param {any[]} list 
+ * @returns Se a lista so contem numeros
+ */
+function listIsOnlyNumbers(list) {
+    for (let i = 0; i < list.length; i++) {
+      if (typeof list[i] !== 'number') {
+        return false;
+      }
+    }
+    return true;
+  }
+/**
+ * Função que verifica os highscores por troféus cada vez que um nível é completado
+ * @param {number[]} highscores Lista de records para cada nível
+ */
 function awardCheck(highscores){
     let soma = highscores.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     console.log(highscores);
     console.log(soma);
-    //min:179
-    //max:720
+    //t1 trofeu caso todos os níveis tenham sido acabados com menos de 200 pontos (min179)
+    if (listIsOnlyNumbers(highscores) && soma<200) {//highscores so tem numeros e soma < 200
+        awards[0] = true;
+    }
+    //t2 todos os níveis acabados
+    if (listIsOnlyNumbers(highscores)){ //highscores so tem numeros
+        awards[1] = true;
+    }
+    //t3 300pontos
+    if (soma>=300){
+        awards[2] = true;
+    }
+    //t4 600pontos
+    if (soma>=600) {
+        awards[3] = true;
+    }
+    //t5 720pontos (max)
+    if (soma==720){
+        awards[4] = true;
+    }
+    localStorage.setItem('awards', JSON.stringify(awards)); //guardar no browser cada vez que se ganha um troféu
+    //mostrar os troféus na lista
+    showAwards();
+}
+/**
+ * Função que mostra os troféus
+ */
+function showAwards(){
+    let allAwards = ["t1","t2","t3","t4","t5"];
+    for (let i = 0; i < 5; i++) {
+        console.log(awards[i]);
+        if (awards[i]) {
+            document.getElementById(allAwards[i]).style.opacity = '1';
+        }
+    }
+}
+
+function tutorial(){
+    document.getElementById("trofeus").style.display = "none";
+    document.getElementById("jogar").style.display = "none";
+    document.getElementById("tutorial").style.display = "";
+}
+function jogar(){
+    document.getElementById("trofeus").style.display = "none";
+    document.getElementById("jogar").style.display = "";
+    document.getElementById("tutorial").style.display = "none";
+}
+function trofeus(){
+    document.getElementById("trofeus").style.display = "";
+    document.getElementById("jogar").style.display = "none";
+    document.getElementById("tutorial").style.display = "none";
 }

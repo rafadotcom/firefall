@@ -124,3 +124,30 @@ canvas {
     grid-row: 2 / 3;
     background-image: url('images/arrows/down.png'); /* Set the path to your image */
 }
+
+#tutorial, #trofeus {
+    text-align: center;
+}
+
+h2 {
+    margin: auto;
+}
+
+#texto {
+    width: 600px;
+    margin: auto;
+    text-align: left;
+    font-size: medium;
+}
+#texto h3 {
+    margin-top: 50px;
+}
+#texto p {
+    margin-top: -10px;
+    color: rgb(215, 215, 215);
+}
+
+#t1, #t2, #t3, #t4, #t5{
+    opacity: 0.5;
+}
+

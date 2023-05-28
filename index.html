@@ -10,31 +10,75 @@
     </head>
     <body>
         <h1 id="title">FireFall</h1>
-        <!--div id="buttons">
-            <button> Tutorial </button>
-            <button> Jogar </button>
-            <button> Troféus </button>
-        </div-->
-        <div id="canvas" tabindex="1"></div>
-        <div id="pontos">Pontos: y/n</div>
-        <div id="niveis">
-            <label>Nível</label>
-            <button onclick="playLevel(1)">1</button>
-            <button onclick="playLevel(2)">2</button>
-            <button onclick="playLevel(3)">3</button>
-            <button onclick="playLevel(4)">4</button>
-            <button onclick="playLevel(5)">5</button>
-            <button onclick="playLevel(6)">6</button>
-            <button onclick="playLevel(7)">7</button>
-            <button onclick="playLevel(8)">8</button>
-            <button onclick="playLevel(9)">9</button>
+        <div id="buttons">
+            <button onclick="tutorial()"> Tutorial </button>
+            <button onclick="jogar()"> Jogar </button>
+            <button onclick="trofeus()"> Troféus </button>
         </div>
-        <div id="controlos">
-            <div id="setas">
-                <button id="up" onmousedown="buttonPressed(UP_ARROW)" onmouseup="buttonReleased()"></button>
-                <button id="down" onmousedown="buttonPressed(DOWN_ARROW)" onmouseup="buttonReleased()"></button>
-                <button id="left" onmousedown="buttonPressed(LEFT_ARROW)" onmouseup="buttonReleased()"></button>
-                <button id="right" onmousedown="buttonPressed(RIGHT_ARROW)" onmouseup="buttonReleased()"></button>
+        <div id="jogar">
+            <div id="canvas" tabindex="1"></div>
+            <div id="pontos">Pontos: y/n</div>
+            <div id="niveis">
+                <label>Nível</label>
+                <button onclick="playLevel(1)">1</button>
+                <button onclick="playLevel(2)">2</button>
+                <button onclick="playLevel(3)">3</button>
+                <button onclick="playLevel(4)">4</button>
+                <button onclick="playLevel(5)">5</button>
+                <button onclick="playLevel(6)">6</button>
+                <button onclick="playLevel(7)">7</button>
+                <button onclick="playLevel(8)">8</button>
+                <button onclick="playLevel(9)">9</button>
+            </div>
+            <div id="controlos">
+                <div id="setas">
+                    <button id="up" onmousedown="buttonPressed(UP_ARROW)" onmouseup="buttonReleased()"></button>
+                    <button id="down" onmousedown="buttonPressed(DOWN_ARROW)" onmouseup="buttonReleased()"></button>
+                    <button id="left" onmousedown="buttonPressed(LEFT_ARROW)" onmouseup="buttonReleased()"></button>
+                    <button id="right" onmousedown="buttonPressed(RIGHT_ARROW)" onmouseup="buttonReleased()"></button>
+                </div>
+            </div>
+        </div>
+        <div id="tutorial" style="display:none">
+            <h2>Como Jogar</h2>
+            <div id="texto">
+                <h3>Usa as setas para te movimentares</h3>
+                <p>Podes usar as do teclado ou as que encontras no ecrã</p>
+
+                <h3>Só podes caminhar pelas casas pintadas</h3>
+                <p>Não podes voltar a uma casa por onde já passaste</p>
+                <p>Mas as mais escuras podem ser atravessadas 2 vezes</p>
+
+                <h3>Tem cuidado para não te encurralares!</h3>
+                <p>Nesse caso terás de recomeçar o nível :(( </p>
+                
+                <h3>O objetivo é chegar á casa preta</h3>
+                <p>Mas quanto mais pontos conseguires, melhor!</p>
+            </div>
+        </div>
+        <div id="trofeus" style="display:none">
+            <h2>Troféus</h2>
+            <div id="texto">
+                <div id="t1">
+                    <h3>Speed Run?</h3>
+                    <p>Acabaste todos os níveis com menos de 200 pontos</p>
+                </div>
+                <div id="t2">
+                    <h3>Um começo!</h3>
+                    <p>Conseguiste acabar todos os níveis</p>
+                </div>
+                <div id="t3">
+                    <h3>Gosto do esforço</h3>
+                    <p>Conseguiste 300 pontos</p>
+                </div>
+                <div id="t4">
+                    <h3>Quase quase lá</h3>
+                    <p>Conseguiste 600 pontos</p>
+                </div>
+                <div id="t5">
+                    <h3>É tudo teu!</h3>
+                    <p>Conseguiste acabar todos os níveis com todos os pontos!!!</p>
+                </div>
             </div>
         </div>
         <script src="contents/p5/p5.min.js"></script>
