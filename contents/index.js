@@ -307,6 +307,7 @@ function updatePontos(n,p) {
  */
 function playLevel(n){
     nivel = n; //guardar o nivel onde o jogador esta
+    if (n>9){return;}
     //selecionar nivel a partir de um numero
     const level = levels[n-1];
     updatePontos(0,level.total);
@@ -486,13 +487,14 @@ function awardCheck(highscores){
         awards[3] = true;
     }
     //t5 720pontos (max)
-    if (soma==720){
+    if (soma>=740){
         awards[4] = true;
     }
     localStorage.setItem('awards', JSON.stringify(awards)); //guardar no browser cada vez que se ganha um troféu
     //mostrar os troféus na lista
     showAwards();
 }
+awardCheck(highscores);
 /**
  * Função que mostra os troféus
  */
